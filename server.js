@@ -25,12 +25,12 @@ app.use(cors())
 
 // Import the routes
 const userRoutes = require("./routes/user")
-// const productRoutes = require("./routes/product")
+const checkoutRoutes = require("./routes/checkout")
 
 
 // Using routes
 app.use('/api', userRoutes)
-// app.use('/api/products', productRoutes)
+app.use('/api/checkout', checkoutRoutes)
 
 
 

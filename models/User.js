@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    shoppingList: [{
+        name: {
+            type: String,
+        },
+        quantity: {
+            type: Number,
+        }
+    }],
     salt: String,
 }, { timestamps: true })
 

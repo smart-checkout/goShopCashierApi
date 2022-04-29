@@ -2,6 +2,7 @@ const User = require("../models/User")
 const { validationResult } = require('express-validator')
 var jwt = require('jsonwebtoken')
 
+var ObjectID = require('mongodb').ObjectID;
 
 exports.signup = (req, res) => {
     const errors = validationResult(req)
@@ -65,7 +66,45 @@ exports.signin = (req, res) => {
 
     })
 }
+exports.shoppingList = (req, res) => {
 
+    User.findOne({ _id: new ObjectID(req.body.id) }, (err, user) => {
+        const { shoppingList } = user
+        if (err) {
+            return res.json({
+                message: "an error occured"
+            })
+        }
+        if (shoppingList.length === 0) {
+            return res.json({
+                message: "empty list"
+            })
+        }
+        return res.json({
+            user: {
+                shoppingList
+            }
+        })
+
+    })
+}
+exports.clearShoppingList = (req, res) => {
+
+
+    User.updateOne({ _id: new ObjectID(req.body.id) }, { $pull: { "shoppingList": {} } }, (err, user) => {
+
+        if (err) {
+            return res.json({
+                message: "an error occured"
+            })
+        }
+        return res.json({
+            message: "success"
+
+        })
+
+    })
+}
 exports.signout = (req, res) => {
     res.clearCookie("token")
     return res.json({
